@@ -1,10 +1,13 @@
 <?php
 
 namespace App\Database;
+
 use Dotenv;
 
-require __DIR__ . '/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+require __DIR__ . '/../../vendor/autoload.php';
+
+// Adjust the path if your .env file is in the project root
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../');
 $dotenv->load();
 
 // using oop php
@@ -20,6 +23,10 @@ class Connection
         $pass = $_ENV['PASSWORD'];
 
         $this->conn = new \mysqli($host, $user, $pass, $dbname);
+
+        if (!$dbname || !$user || !$pass || !$host) {
+            echo "Database connection failed";
+        }
     }
     public function connect()
     {
@@ -29,5 +36,3 @@ class Connection
         return $this->conn;
     }
 }
-
-

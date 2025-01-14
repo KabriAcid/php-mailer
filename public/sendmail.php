@@ -7,34 +7,35 @@ require 'vendor/autoload.php';
 
 $mail = new PHPMailer(true);
 
+$from = 'Kabriacid01@gmail.com';
+$to = 'ibrahimfura@gmail.com';
+$subject = 'Your Subject Here';
+$message = 'This is the email content.';
+
 try {
-    $host = $_ENV['SMTP_USERNMAE'];
-    $pwd = $_ENV['SMTP_PASSWORD'];
-    // Server settings
-    $mail->SMTPDebug = 2; // Enable verbose debug output
-    $mail->isSMTP(); // Set mailer to use SMTP
-    $mail->Host = 'smtp.`{$gmail}`.com'; // Specify main and backup SMTP servers
-    $mail->SMTPAuth = true; // Enable SMTP authentication
-    $mail->Username = $host; // SMTP username
-    $mail->Password = $pwd; // SMTP password
-    $mail->SMTPSecure = 'tls'; // Enable TLS encryption, `ssl` also accepted
-    $mail->Port = 587; // TCP port to connect to
+    $host = getenv('SMTP_HOST');
+    $username = getenv('SMTP_USERNAME');
+    $password = getenv('SMTP_PASSWORD');
 
-    // Recipients
-    $mail->setFrom('from@example.com', 'Mailer');
-    $mail->addAddress('joe@example.net', 'Joe User'); // Add a recipient
-    $mail->addReplyTo('info@example.com', 'Information');
-    $mail->addCC('cc@example.com');
-    $mail->addBCC('bcc@example.com');
+    $mail->SMTPDebug = 2;
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = $username;
+    $mail->Password = $password;
+    $mail->SMTPSecure = 'tls';
+    $mail->Port = 587;
 
-    // Content
-    $mail->isHTML(true); // Set email format to HTML
-    $mail->Subject = 'Here is the subject';
-    $mail->Body = 'This is the HTML message body <b>in bold!</b>';
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    $mail->setFrom($from, 'Mailer');
+    $mail->addAddress($to);
+    $mail->addReplyTo($from, 'No-reply');
+
+    $mail->isHTML(true);
+    $mail->Subject = $subject;
+    $mail->Body = $message;
+    $mail->AltBody = strip_tags($message);
 
     $mail->send();
     echo 'Message has been sent';
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-}
+    echo "Message could not

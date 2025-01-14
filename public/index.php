@@ -1,10 +1,9 @@
 <?php
 use App\Database\Connection;
-require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../app/database/Connection.php';
 
 $conn = new Connection();
-echo $conn->connect() ? 'true' : 'false';
+
 
 ?>
 <!DOCTYPE html>
